@@ -74,7 +74,7 @@ def create_app(
     @app.after_request
     def add_cors_headers(response: Response) -> Response:
         origin = request.headers.get("Origin", "").rstrip("/")
-        if origin in settings.allowed_origins:
+        if "*" in settings.allowed_origins or origin in settings.allowed_origins:
             response.headers["Access-Control-Allow-Origin"] = origin
             response.headers["Vary"] = "Origin"
             response.headers["Access-Control-Allow-Headers"] = "Content-Type"
