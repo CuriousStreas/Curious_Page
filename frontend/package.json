@@ -1,0 +1,22 @@
+{
+  "name": "curious-resume-terminal",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host=127.0.0.1 --port=4173",
+    "build": "vite build",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@lucide/vue": "latest",
+    "@vitejs/plugin-vue": "latest",
+    "vite": "latest",
+    "vue": "latest"
+  },
+  "devDependencies": {
+    "@vue/test-utils": "^2.4.11",
+    "jsdom": "^30.0.1",
+    "vitest": "latest"
+  }
+}
