@@ -1,0 +1,93 @@
+<style>
+  :root { --ink:#111517; --paper:#eef1ee; --cyan:#00bdc9; --muted:#697477; --line:rgba(17,21,23,.18); }
+  body { background:#dfe4e1 !important; color:var(--ink) !important; }
+  .intro { max-width:1180px; margin:0 auto 24px; }
+  .intro h2 { margin-bottom:6px; font:700 30px/1.1 'Arial Narrow',sans-serif; }
+  .intro p { color:#526064; }
+  .directions { display:grid; grid-template-columns:1fr 1fr; gap:22px; max-width:1180px; margin:auto; }
+  .direction { padding:0 !important; overflow:hidden; border:2px solid transparent !important; background:#fff !important; cursor:pointer; transition:transform .2s,border-color .2s; }
+  .direction:hover { transform:translateY(-3px); }
+  .direction.selected { border-color:var(--cyan) !important; }
+  .screen { position:relative; height:570px; overflow:hidden; background-color:var(--paper); background-image:linear-gradient(rgba(17,21,23,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(17,21,23,.045) 1px,transparent 1px); background-size:25px 25px; font-family:'Arial Narrow','Microsoft YaHei',sans-serif; }
+  .bar { height:48px; display:flex; align-items:center; justify-content:space-between; padding:0 18px 0 62px; border-bottom:1px solid var(--line); background:rgba(238,241,238,.93); }
+  .brand { font:bold 12px monospace; }
+  .path { color:#697477; font:10px monospace; }
+  .cat-entry { display:flex; align-items:center; gap:9px; height:36px; padding:0 11px 0 7px; border:1px solid var(--ink); background:var(--ink); color:white; font:bold 10px monospace; }
+  .pixel-cat { position:relative; width:29px; height:25px; image-rendering:pixelated; }
+  .pixel-cat .head { position:absolute; left:4px; top:6px; width:21px; height:17px; background:var(--cyan); box-shadow:0 0 0 2px var(--ink),4px -5px 0 -1px var(--cyan),-4px -5px 0 -1px var(--cyan); }
+  .pixel-cat .eye { position:absolute; top:13px; width:3px; height:4px; background:var(--ink); z-index:2; }
+  .pixel-cat .eye.l { left:9px; } .pixel-cat .eye.r { right:9px; }
+  .pixel-cat .tail { position:absolute; right:-2px; bottom:1px; width:7px; height:4px; border:3px solid var(--cyan); border-left:0; }
+  .rail { position:absolute; z-index:4; left:0; top:48px; bottom:0; width:49px; background:var(--ink); color:white; transition:width .25s; }
+  .rail:hover { width:178px; box-shadow:18px 0 40px rgba(0,0,0,.2); }
+  .rail-label { writing-mode:vertical-rl; position:absolute; top:26px; left:16px; color:var(--cyan); font:bold 9px monospace; letter-spacing:1px; }
+  .rail-menu { opacity:0; margin:65px 13px 0 58px; width:105px; transition:opacity .18s; }
+  .rail:hover .rail-menu { opacity:1; }
+  .rail-menu div { padding:12px 0; border-bottom:1px solid rgba(255,255,255,.16); font:bold 12px monospace; white-space:nowrap; }
+  .rail-menu span { display:block; margin-bottom:3px; color:var(--cyan); font-size:8px; }
+  .hero { display:grid; grid-template-columns:1.08fr .92fr; height:calc(100% - 48px); padding-left:76px; }
+  .copy { display:flex; flex-direction:column; justify-content:center; padding:28px 28px 35px 0; }
+  .eyebrow { color:#596467; font:bold 10px monospace; }
+  .eyebrow b { display:inline-block; width:28px; height:3px; margin-right:8px; background:var(--cyan); vertical-align:middle; }
+  .copy h1 { margin:18px 0 9px; font:800 72px/.82 'Arial Narrow','Microsoft YaHei',sans-serif; letter-spacing:0; }
+  .copy h1 small { display:block; margin-top:18px; color:var(--muted); font:600 17px/1 monospace; }
+  .tagline { margin:17px 0 22px; font-size:22px; font-weight:700; line-height:1.4; }
+  .buttons { display:flex; gap:9px; }
+  .cta { min-height:45px; padding:0 15px; display:flex; align-items:center; gap:10px; border:1px solid var(--ink); background:transparent; font-size:12px; font-weight:bold; }
+  .cta.ai { background:var(--ink); color:white; }
+  .cta.ai i { width:8px; height:8px; background:var(--cyan); box-shadow:0 0 0 3px rgba(0,189,201,.2); }
+  .evidence { position:relative; margin:30px 24px 28px 0; padding:28px; overflow:hidden; background:var(--ink); color:white; display:flex; flex-direction:column; justify-content:flex-end; }
+  .evidence .giant { position:absolute; top:30px; right:18px; color:rgba(255,255,255,.1); font:800 112px/.67 'Arial Narrow',sans-serif; text-align:right; }
+  .evidence .giant b { color:var(--cyan); }
+  .evidence p { position:relative; font-size:19px; line-height:1.5; font-weight:bold; }
+  .stats { position:relative; display:grid; grid-template-columns:repeat(3,1fr); padding-top:14px; border-top:1px solid #667074; }
+  .stats b { display:block; font-size:22px; } .stats span { color:#aab3b5; font-size:8px; }
+  .variant-b .hero { grid-template-columns:.9fr 1.1fr; }
+  .variant-b .copy h1 { font-size:62px; }
+  .variant-b .tagline { font-size:25px; }
+  .cat-stage { position:relative; margin:30px 24px 28px 0; overflow:hidden; background:var(--ink); color:white; display:grid; place-items:center; }
+  .cat-stage:before { content:''; position:absolute; inset:12%; border:1px solid rgba(0,189,201,.45); transform:rotate(-5deg); }
+  .cat-large { position:relative; width:150px; height:130px; animation:float 2.2s steps(2) infinite; }
+  .cat-large .face { position:absolute; left:24px; top:27px; width:104px; height:84px; background:var(--cyan); box-shadow:0 0 0 9px #080b0c,17px -25px 0 -5px var(--cyan),-17px -25px 0 -5px var(--cyan); }
+  .cat-large .eye { position:absolute; z-index:2; top:62px; width:13px; height:18px; background:#080b0c; }
+  .cat-large .eye.l { left:48px; } .cat-large .eye.r { right:48px; }
+  .cat-large .mouth { position:absolute; z-index:2; top:90px; left:68px; width:18px; height:8px; border-bottom:5px solid #080b0c; }
+  .cat-copy { position:absolute; bottom:24px; left:25px; right:25px; display:flex; justify-content:space-between; align-items:end; font:9px monospace; color:#aab3b5; }
+  .cat-copy strong { color:white; font-size:13px; }
+  @keyframes float { 50% { transform:translateY(-7px); } }
+  .caption { padding:17px 18px 19px; }
+  .caption h3 { margin:0 0 5px; font-size:17px; }
+  .caption p { margin:0; color:#667174; font-size:12px; line-height:1.5; }
+  @media(max-width:900px){.directions{grid-template-columns:1fr}.screen{height:520px}.path{display:none}.hero{grid-template-columns:1fr;padding-left:64px}.evidence,.cat-stage{display:none}.copy h1,.variant-b .copy h1{font-size:66px}}
+</style>
+
+<div class="intro">
+  <h2>首页身份与 AI 入口，哪种戏份更合适？</h2>
+  <p>两套方案都用 <strong>Curious</strong> 代替真实姓名，不限定投递岗位；悬停左侧黑色索引条可展开章节抽屉。点击方案即可选择。</p>
+</div>
+
+<div class="directions cards">
+  <div class="direction card" data-choice="a-balanced-terminal" onclick="toggleSelect(this)">
+    <div class="screen">
+      <div class="bar"><div class="brand">CT / CURIOUS</div><div class="path">CURIOUSTREA.FUN / INDEX</div><div class="cat-entry"><div class="pixel-cat"><i class="head"></i><i class="eye l"></i><i class="eye r"></i><i class="tail"></i></div>ASK CURIOUS</div></div>
+      <aside class="rail"><div class="rail-label">CHAPTER INDEX</div><div class="rail-menu"><div><span>00</span>首页</div><div><span>01</span>能力档案</div><div><span>02</span>实习记录</div><div><span>03</span>项目证据</div><div><span>04</span>继续了解</div></div></aside>
+      <div class="hero">
+        <section class="copy"><div class="eyebrow"><b></b>27 届计算机硕士 / AVAILABLE 2027</div><h1>Curious<small>ENGINEER / BUILDER / PLAYER</small></h1><div class="tagline">让好奇心每天上线，<br>让想法真正跑起来。</div><div class="buttons"><div class="cta">查看实习记录　→</div><div class="cta ai"><i></i>和 AI 版的我聊聊</div></div></section>
+        <section class="evidence"><div class="giant">BUILD<br><b>?</b></div><p>从模型、工具到游戏，<br>持续把问题变成可运行的答案。</p><div class="stats"><div><b>03</b><span>TECH INTERNSHIPS</span></div><div><b>AI</b><span>REAL WORKFLOWS</span></div><div><b>∞</b><span>CURIOSITY ONLINE</span></div></div></section>
+      </div>
+    </div>
+    <div class="caption"><h3>A / 双入口平衡型（推荐）</h3><p>简历证据与 AI 亮点同级。像素猫在右上角持续在线，但不会压过个人信息。</p></div>
+  </div>
+
+  <div class="direction card variant-b" data-choice="b-cat-companion" onclick="toggleSelect(this)">
+    <div class="screen">
+      <div class="bar"><div class="brand">CT / CURIOUS</div><div class="path">CURIOUSTREA.FUN / INDEX</div><div class="cat-entry"><div class="pixel-cat"><i class="head"></i><i class="eye l"></i><i class="eye r"></i><i class="tail"></i></div>AI ONLINE</div></div>
+      <aside class="rail"><div class="rail-label">CHAPTER INDEX</div><div class="rail-menu"><div><span>00</span>首页</div><div><span>01</span>能力档案</div><div><span>02</span>实习记录</div><div><span>03</span>项目证据</div><div><span>04</span>继续了解</div></div></aside>
+      <div class="hero">
+        <section class="copy"><div class="eyebrow"><b></b>A CURIOUS PERSON, CURRENTLY ONLINE</div><h1>Curious<small>COMPUTER SCIENCE / 2027</small></h1><div class="tagline">对世界保持好奇，<br>对答案负责到底。</div><div class="buttons"><div class="cta ai"><i></i>问问像素猫</div><div class="cta">翻阅我的档案　→</div></div></section>
+        <section class="cat-stage"><div class="cat-large"><i class="face"></i><i class="eye l"></i><i class="eye r"></i><i class="mouth"></i></div><div class="cat-copy"><span>CURIOUS AI COMPANION<br>VERIFIED RESUME DATA</span><strong>点击开始对话 →</strong></div></section>
+      </div>
+    </div>
+    <div class="caption"><h3>B / 像素猫主角型</h3><p>猫成为首页最强记忆点，AI 入口优先。更有趣，但会减少首屏展示工程证据的面积。</p></div>
+  </div>
+</div>
